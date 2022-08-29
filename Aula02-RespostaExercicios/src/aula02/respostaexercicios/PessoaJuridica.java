@@ -31,6 +31,8 @@ public final class PessoaJuridica extends Pessoa implements IPessoa {
         
         // 3 - FORMA
         valorDesconto = valorDesconto - (valorDesconto * ((valor + 20) / 100));
+        
+        
 
     }
 
