@@ -7,7 +7,7 @@
  *
  * @author alex.lopes
  */
-public class TesteInterface {
+public class Aula09 {
 
     /**
      * @param args the command line arguments

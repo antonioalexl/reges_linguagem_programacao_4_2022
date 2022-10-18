@@ -14,7 +14,7 @@ import java.util.Scanner;
  *
  * @author alex.lopes
  */
-public class CreateTextFile {
+public class Cliente  {
 
     private static Formatter output; // envia uma saída de texto para um arquivoÿ
 
@@ -24,6 +24,20 @@ public class CreateTextFile {
         closeFile();
     }
 
+    public static void CalcularAcrescimo(float desconto);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public static void openFile() {
         try {
             output = new Formatter("clients.txt"); // abre o arquivo
