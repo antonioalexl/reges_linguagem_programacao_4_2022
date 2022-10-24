@@ -4,6 +4,7 @@
  */
 package br.com.superreges.view;
 
+import br.com.superreges.rdn.ConnectionFactory;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -19,6 +20,10 @@ public class Principal {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        ConnectionFactory conTeste = new ConnectionFactory();
+        conTeste.getConnection();
+        
         // TODO code application logic here
 
         /* Set the Nimbus look and feel */
@@ -61,7 +66,7 @@ public class Principal {
                 principal.setSize(width, height);
                 principal.setLocation(in.left, in.top);*/
 
-                principal.setVisible(true);
+               // principal.setVisible(true);
 
                 // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 //double width = screenSize.getWidth();
