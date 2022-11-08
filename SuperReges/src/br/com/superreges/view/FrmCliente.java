@@ -27,7 +27,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
     ArrayList<Cliente> lstCliente;
 
     boolean modoAlterarDeletar = false;
-    String id = "";
+    int id = 0;
     int indiceLista = 0;
 
     public FrmCliente() {
@@ -366,13 +366,13 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         Endereco endereco = new Endereco(txtRua.getText(), txtCidade.getText(), txtNumero.getText(), txtUf.getText(),
                 txtBairro.getText(), txtCep.getText());
 
-        String idCli = "";
+        int idCli = 0;
 
         if (this.modoAlterarDeletar == true) {
             idCli = this.id;
 
         } else {
-            idCli = java.util.UUID.randomUUID().toString();
+            idCli = 0;
         }
 
         Cliente cliente = new Cliente(idCli, txtNome.getText(), cal, txtDocumento.getText(), txtTelefone.getText(),
@@ -402,7 +402,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         int row = this.tableCliente.getSelectedRow();
 
         //RECUPERA O VALOr DA COLUNA ID ESTA NA 0
-        String idCliente = (String) this.tableCliente.getValueAt(row, 0);
+        int idCliente = (int) this.tableCliente.getValueAt(row, 0);
 
         //GUARDA O ID PARA ALTERAR/REMOVER
         this.id = idCliente;
@@ -412,7 +412,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         //RECUPERAR POR ID
         Cliente cliente = null;
 
-        for (int i = 0; i < lstCliente.size(); i++) {
+        /*for (int i = 0; i < lstCliente.size(); i++) {
 
             if (lstCliente.get(i).getId().equals(idCliente)) {
 
@@ -420,7 +420,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
                 indice = i;
                 break;
             }
-        }
+        }*/
 
         this.indiceLista = indice;
 

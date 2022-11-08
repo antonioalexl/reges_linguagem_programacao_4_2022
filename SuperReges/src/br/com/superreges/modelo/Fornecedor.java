@@ -16,7 +16,7 @@ public class Fornecedor extends Pessoa {
     private String representacao; //marcas que o fornecedor representa    
     
     
-     public Fornecedor(String id, String nome, Calendar dataNascimento, String documento, 
+     public Fornecedor(int id, String nome, Calendar dataNascimento, String documento, 
             String telefone, String email, Endereco endereco, String representacao)
     {
        

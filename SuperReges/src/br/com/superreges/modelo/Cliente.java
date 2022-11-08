@@ -17,7 +17,7 @@ public class Cliente extends Pessoa {
     
     
     
-    public Cliente(String id, String nome, Calendar dataNascimento, String documento, 
+    public Cliente(int id, String nome, Calendar dataNascimento, String documento, 
             String telefone, String email, Endereco endereco, String cartaoFidelidade)
     {
        
