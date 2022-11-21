@@ -5,6 +5,7 @@
 package br.com.superreges.rdn;
 
 import br.com.superreges.modelo.Cliente;
+import br.com.superreges.modelo.Endereco;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +29,20 @@ public class ClienteRdn {
 
             str.append("INSERT INTO pessoa(                 ");
             str.append("            nome                    ");
-            str.append("           ,dataNascimento          ");
+          //  str.append("           ,dataNascimento          ");
             str.append("            ,documento              ");
             str.append("            ,telefone               ");
             str.append("            ,email                  ");
             str.append("            ,tipo)                  ");
             str.append("      VALUES(                       ");
             str.append("             ?                      ");
-            str.append("            ,?                      ");
+          //  str.append("            ,?                      ");
             str.append("            ,?                      ");
             str.append("            ,?                      ");
             str.append("            ,?                      ");
             str.append("            ,?                      ");
             str.append("         )                          ");
+            
 
             //  Connection conn = new ConnectionFactory().getConnection();
             ConnectionFactory factory = new ConnectionFactory();
@@ -49,11 +51,11 @@ public class ClienteRdn {
             PreparedStatement stmt = conn.prepareStatement(str.toString());
 
             stmt.setString(1, cli.getNome());
-            stmt.setDate(2, new java.sql.Date(cli.getDataNascimento().getTimeInMillis()));
-            stmt.setString(3, cli.getDocumento());
-            stmt.setString(4, cli.getTelefone());
-            stmt.setString(5, cli.getEmail());
-            stmt.setInt(6, 1);
+           // stmt.setDate(2, new java.sql.Date(cli.getDataNascimento().getTimeInMillis()));
+            stmt.setString(2, cli.getDocumento());
+            stmt.setString(3, cli.getTelefone());
+            stmt.setString(4, cli.getEmail());
+            stmt.setInt(5, 1);
 
             linhasAfetadas = stmt.executeUpdate();
 
@@ -142,7 +144,7 @@ public class ClienteRdn {
 
             StringBuilder str = new StringBuilder();
 
-            str.append("SELECT  IDPESSOA          ");
+            str.append("SELECT  ID               ");
             str.append("     ,NOME               ");
             str.append("     ,DATANASCIMENTO     ");
             str.append("     ,DOCUMENTO          ");
@@ -160,6 +162,9 @@ public class ClienteRdn {
             //RECEBER OS DADOS NO RESULTSET
             ResultSet rs = stmt.executeQuery(str.toString());
 
+            //INSTANCIA DA CLASSE ENDERECO RDN
+             EnderecoRdn endRdn = new EnderecoRdn();
+             
             while (rs.next()) {
 
                 //CONVERTER SQL DATE TO CALENDAR
@@ -170,13 +175,17 @@ public class ClienteRdn {
                 public Cliente(int id, String nome, Calendar dataNascimento, String documento, 
                 String telefone, String email, Endereco endereco, String cartaoFidelidade)
                  */
-                Cliente cli = new Cliente(rs.getInt("IDPESSOA"),
+               
+              Endereco end =   endRdn.obterPorIdPessoa(rs.getInt("ID"));
+                
+                
+                Cliente cli = new Cliente(rs.getInt("ID"),
                         rs.getString("NOME"),
                         calendar,
                         rs.getString("DOCUMENTO"),
                         rs.getString("TELEFONE"),
                         rs.getString("EMAIL"),
-                        null,
+                        end,
                         rs.getString("CARTAOFIDELIDADE"));
 
                 lstCli.add(cli);
@@ -198,7 +207,7 @@ public class ClienteRdn {
 
             StringBuilder str = new StringBuilder();
 
-            str.append("SELECT  IDPESSOA         ");
+            str.append("SELECT  ID               ");
             str.append("     ,NOME               ");
             str.append("     ,DATANASCIMENTO     ");
             str.append("     ,DOCUMENTO          ");
@@ -217,6 +226,9 @@ public class ClienteRdn {
             //RECEBER OS DADOS NO RESULTSET
             ResultSet rs = stmt.executeQuery();
 
+            //INSTANCIA DA CLASSE ENDERECO RDN
+            EnderecoRdn endRdn = new EnderecoRdn();
+            
             while (rs.next()) {
 
                 //CONVERTER SQL DATE TO CALENDAR
@@ -227,7 +239,9 @@ public class ClienteRdn {
                 public Cliente(int id, String nome, Calendar dataNascimento, String documento, 
                 String telefone, String email, Endereco endereco, String cartaoFidelidade)
                  */
-                ret = new Cliente(rs.getInt("IDPESSOA"),
+                Endereco end = endRdn.obterPorIdPessoa(rs.getInt("ID"));
+                
+                ret = new Cliente(rs.getInt("ID"),
                         rs.getString("NOME"),
                         calendar,
                         rs.getString("DOCUMENTO"),

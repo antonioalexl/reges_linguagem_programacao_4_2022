@@ -11,6 +11,7 @@ package br.com.superreges.modelo;
 public class Endereco {
     
     
+   private int id; 
    private String logradouro;
    private String cidade;
    private String numero;   
@@ -19,9 +20,10 @@ public class Endereco {
    private String cep;
 
    
-   public Endereco(String logradouro, String cidade, String numero, String uf, 
+   public Endereco(int id, String logradouro, String cidade, String numero, String uf, 
            String bairro, String cep)
    {
+       this.id = id;
        this.logradouro = logradouro;
        this.cidade = cidade;
        this.numero = numero;

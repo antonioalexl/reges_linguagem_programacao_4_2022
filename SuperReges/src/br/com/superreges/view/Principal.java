@@ -66,7 +66,7 @@ public class Principal {
                 principal.setSize(width, height);
                 principal.setLocation(in.left, in.top);*/
 
-               // principal.setVisible(true);
+                principal.setVisible(true);
 
                 // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 //double width = screenSize.getWidth();

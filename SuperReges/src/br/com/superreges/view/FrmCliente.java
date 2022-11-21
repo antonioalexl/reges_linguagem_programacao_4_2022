@@ -6,6 +6,7 @@ package br.com.superreges.view;
 
 import br.com.superreges.modelo.Cliente;
 import br.com.superreges.modelo.Endereco;
+import br.com.superreges.rdn.ClienteRdn;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -363,7 +364,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
             Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        Endereco endereco = new Endereco(txtRua.getText(), txtCidade.getText(), txtNumero.getText(), txtUf.getText(),
+        Endereco endereco = new Endereco(0, txtRua.getText(), txtCidade.getText(), txtNumero.getText(), txtUf.getText(),
                 txtBairro.getText(), txtCep.getText());
 
         int idCli = 0;
@@ -376,20 +377,28 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         }
 
         Cliente cliente = new Cliente(idCli, txtNome.getText(), cal, txtDocumento.getText(), txtTelefone.getText(),
-                txtEmail.getText(), endereco, txtFidelidade.getText());
+                txtEmail.getText(), null, txtFidelidade.getText());
 
         this.modoNovo();
 
+        ClienteRdn cliRdn = new ClienteRdn();
+        
+        
         if (this.modoAlterarDeletar == true) {
             //ALTERO O VALOR NA POSIÇÃO DA LISTA
-            lstCliente.set(this.indiceLista, cliente);
+            //lstCliente.set(this.indiceLista, cliente);
+            
+            cliRdn.alterarCliente(cliente);                       
             btnNovo.setEnabled(true);
 
         } else {
-            lstCliente.add(cliente);
-        }        
-        this.modoAlterarDeletar = false;
+            //lstCliente.add(cliente);            
+            cliRdn.inserirCliente(cliente);           
+            
+        }                     
         
+        
+        this.modoAlterarDeletar = false;        
         this.carregarTabela();
 
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -487,8 +496,14 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         //limpar a tabela antes de selecionar
         model.setRowCount(0);
 
+        ClienteRdn cliRdn = new ClienteRdn();
+        
+        List<Cliente> lstCli = cliRdn.obterTodos();
+        
+        
+        
         //para cada cliente da lista
-        for (Cliente cli : lstCliente) {
+        for (Cliente cli : lstCli) {
 
             DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");
 
