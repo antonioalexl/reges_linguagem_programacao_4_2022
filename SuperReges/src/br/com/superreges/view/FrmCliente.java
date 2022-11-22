@@ -7,6 +7,7 @@ package br.com.superreges.view;
 import br.com.superreges.modelo.Cliente;
 import br.com.superreges.modelo.Endereco;
 import br.com.superreges.rdn.ClienteRdn;
+import br.com.superreges.rdn.EnderecoRdn;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +39,8 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         initComponents();
 
         this.modoNovo();
+        
+        this.carregarTabela();
     }
 
     @SuppressWarnings("unchecked")
@@ -131,11 +134,11 @@ public class FrmCliente extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "NOME", "TELEFONE", "NASCIMENTO", "EMAIL", "CARTÃO FIDELIDADE", "LOGRADOURO", "BAIRRO", "CEP", "CIDADE", "COMPLEMENTO", "NÚMERO", "UF"
+                "ID", "NOME", "DOCUMENTO", "TELEFONE", "NASCIMENTO", "EMAIL", "CARTÃO FIDELIDADE", "LOGRADOURO", "BAIRRO", "CEP", "CIDADE", "COMPLEMENTO", "NÚMERO", "UF"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -287,7 +290,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
                     .addComponent(jLabel9)
                     .addComponent(txtCep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -418,8 +421,11 @@ public class FrmCliente extends javax.swing.JInternalFrame {
 
         int indice = 0;
 
+        ClienteRdn rdn = new ClienteRdn();
+        
+        
         //RECUPERAR POR ID
-        Cliente cliente = null;
+        Cliente cliente = rdn.obterPorId(id);
 
         /*for (int i = 0; i < lstCliente.size(); i++) {
 
@@ -431,13 +437,15 @@ public class FrmCliente extends javax.swing.JInternalFrame {
             }
         }*/
 
+        
         this.indiceLista = indice;
 
         txtNome.setText(cliente.getNome());
         txtEmail.setText(cliente.getEmail());
         txtFidelidade.setText(cliente.getCartaoFidelidade());
         txtTelefone.setText(cliente.getTelefone());
-
+          txtDocumento.setText(cliente.getDocumento());
+        
         //ALTERAR A DATA
         DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");
         txtDataNascimento.setText(formataData.format(cliente.getDataNascimento().getTime()));
@@ -479,8 +487,14 @@ public class FrmCliente extends javax.swing.JInternalFrame {
 
         if (input == 0) {
 
-            lstCliente.remove(this.indiceLista);
-
+            EnderecoRdn endRdn = new EnderecoRdn();
+            
+            endRdn.deletarEnderecoPorPessoa(this.id);
+            
+            ClienteRdn rdn = new ClienteRdn();
+            
+            rdn.deletarCliente(this.id);                        
+           
             this.carregarTabela();
 
         }
@@ -511,6 +525,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
             model.addRow(new Object[]{
                 cli.getId(),
                 cli.getNome(),
+                cli.getDocumento(),
                 cli.getTelefone(),
                 formataData.format(cli.getDataNascimento().getTime()),
                 cli.getEmail(),

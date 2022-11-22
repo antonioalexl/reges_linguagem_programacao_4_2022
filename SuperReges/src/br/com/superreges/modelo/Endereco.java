@@ -18,6 +18,7 @@ public class Endereco {
    private String uf;
    private String bairro;
    private String cep;
+   private int idPessoa;
 
    
    public Endereco(int id, String logradouro, String cidade, String numero, String uf, 
@@ -69,6 +70,10 @@ public class Endereco {
         return bairro;
     }
 
+    public int getIdPessoa(){
+        return idPessoa;
+    }
+    
     public void setBairro(String bairro) {
         this.bairro = bairro;
     }
@@ -79,5 +84,9 @@ public class Endereco {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+    
+       public void setIdPessoa(int idPessoa) {
+        this.idPessoa = idPessoa;
     }
 }

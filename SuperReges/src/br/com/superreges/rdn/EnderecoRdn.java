@@ -72,7 +72,7 @@ public class EnderecoRdn {
             str.append("           ,bairro           = ? ");
             str.append("           ,cep              = ? ");
             str.append("           ,cidade           = ? ");
-            str.append("WHERE IDENDERECO             = ? ");
+            str.append("WHERE IDPESSOA               = ?   ");
 
             Connection conn = new ConnectionFactory().getConnection();
 
@@ -83,7 +83,7 @@ public class EnderecoRdn {
             stmt.setString(4, end.getBairro());
             stmt.setString(5, end.getCep());
             stmt.setString(6, end.getCidade());
-            stmt.setString(7, end.getNumero());
+            stmt.setInt(7, end.getIdPessoa());
 
             linhasAfetadas = stmt.executeUpdate();
             stmt.close();
@@ -101,18 +101,18 @@ public class EnderecoRdn {
 
     }
 
-    public int deletarEndereco(int idEndereco) {
+    public int deletarEnderecoPorPessoa(int idPessoa) {
 
         try {
 
             int linhasAfetadas;
 
-            String str = "DELETE FROM ENDERECO WHERE IDENDERECO = ?";
+            String str = "DELETE FROM ENDERECO WHERE IDPESSOA = ?";
 
             Connection conn = new ConnectionFactory().getConnection();
 
             PreparedStatement stmt = conn.prepareStatement(str.toString());
-            stmt.setInt(1, idEndereco);
+            stmt.setInt(1, idPessoa);
             linhasAfetadas = stmt.executeUpdate();
 
             stmt.close();
@@ -199,6 +199,7 @@ public class EnderecoRdn {
             str.append("        ,BAIRRO          ");
             str.append("        ,CEP             ");
             str.append("        ,IDPESSOA        ");
+            str.append("        ,CIDADE        ");
             str.append("FROM ENDERECO            ");
             str.append("WHERE IDPESSOA = ?       ");
 

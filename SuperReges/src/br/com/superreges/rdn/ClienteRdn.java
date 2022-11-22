@@ -43,7 +43,11 @@ public class ClienteRdn {
             str.append("            ,?                      ");
             str.append("         )                          ");
             
+            //recuperar o ultimo do id do cliente
 
+            //inserir o endereco
+            
+            
             //  Connection conn = new ConnectionFactory().getConnection();
             ConnectionFactory factory = new ConnectionFactory();
             Connection conn = factory.getConnection();
@@ -82,7 +86,8 @@ public class ClienteRdn {
             str.append("                  ,DOCUMENTO		 = ?        ");
             str.append("                 ,TELEFONE               = ?        ");
             str.append("                 ,EMAIL 		 = ?        ");
-            str.append("WHERE	IDPESSOA                         = ?        ");
+            str.append("                 ,CARTAOFIDELIDADE	 = ?        ");
+            str.append("WHERE	ID                               = ?        ");
 
             ConnectionFactory factory = new ConnectionFactory();
             Connection conn = factory.getConnection();
@@ -94,10 +99,16 @@ public class ClienteRdn {
             stmt.setString(3, cli.getDocumento());
             stmt.setString(4, cli.getTelefone());
             stmt.setString(5, cli.getEmail());
-            stmt.setInt(6, cli.getId());
+            stmt.setString(6, cli.getCartaoFidelidade());            
+            stmt.setInt(7, cli.getId());
 
             linhasAfetadas = stmt.executeUpdate();
 
+            
+            EnderecoRdn endRdn = new EnderecoRdn();
+            
+            //endRdn.alterarEndereco(cli.getEndereco());
+            
             //LIBERAR OS RECURSOS
             stmt.close();
             conn.close();
@@ -116,7 +127,7 @@ public class ClienteRdn {
 
             int linhasAfetadas = 0;
 
-            String str = "DELETE FROM PESSOA WHERE IDPESSOA = ?";
+            String str = "DELETE FROM PESSOA WHERE ID = ?";
             ConnectionFactory factory = new ConnectionFactory();
             Connection conn = factory.getConnection();
 
@@ -150,6 +161,7 @@ public class ClienteRdn {
             str.append("     ,DOCUMENTO          ");
             str.append("     ,TELEFONE           ");
             str.append("     ,EMAIL              ");
+            str.append("     ,CARTAOFIDELIDADE   ");
             str.append("FROM PESSOA              ");
             str.append(" WHERE TIPO = 1           ");
 
@@ -210,12 +222,13 @@ public class ClienteRdn {
             str.append("SELECT  ID               ");
             str.append("     ,NOME               ");
             str.append("     ,DATANASCIMENTO     ");
+            str.append("     ,CARTAOFIDELIDADE   ");
             str.append("     ,DOCUMENTO          ");
             str.append("     ,TELEFONE           ");
             str.append("     ,EMAIL              ");
             str.append("FROM PESSOA              ");
             str.append(" WHERE TIPO = 1          ");
-            str.append(" AND IDPESSOA = ?        ");
+            str.append(" AND ID      = ?         ");
 
             //ABRE A CONEXÃO
             Connection conn = new ConnectionFactory().getConnection();
@@ -223,6 +236,9 @@ public class ClienteRdn {
             //CRIAR NOSSO STATEMENT            
             PreparedStatement stmt = conn.prepareStatement(str.toString());
 
+          
+            stmt.setInt(1, id);
+            
             //RECEBER OS DADOS NO RESULTSET
             ResultSet rs = stmt.executeQuery();
 
@@ -247,7 +263,7 @@ public class ClienteRdn {
                         rs.getString("DOCUMENTO"),
                         rs.getString("TELEFONE"),
                         rs.getString("EMAIL"),
-                        null,
+                        end,
                         rs.getString("CARTAOFIDELIDADE"));
                 
 
