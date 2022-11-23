@@ -29,9 +29,11 @@ public class EnderecoRdn {
             str.append("            ,uf                      ");
             str.append("            ,bairro                  ");
             str.append("            ,cep                     ");
+            str.append("            ,cidade                   ");
             str.append("            ,idPessoa)               ");
             str.append("      VALUES(                        ");
             str.append("             ?                       ");
+            str.append("            ,?                       ");
             str.append("            ,?                       ");
             str.append("            ,?                       ");
             str.append("            ,?                       ");
@@ -43,11 +45,15 @@ public class EnderecoRdn {
             PreparedStatement stmt = conn.prepareStatement(str.toString());
 
             stmt.setString(1, end.getLogradouro());
-            stmt.setString(2, end.getCidade());
-            stmt.setString(3, end.getNumero());
-            stmt.setString(4, end.getUf());
-            stmt.setString(5, end.getBairro());
-            stmt.setString(6, end.getCep());
+            stmt.setString(2, end.getNumero());
+            stmt.setString(3, end.getUf());
+            stmt.setString(4, end.getBairro());
+            stmt.setString(5, end.getCep());
+            stmt.setString(6, end.getCidade());           
+            stmt.setInt(7, end.getIdPessoa());
+            
+            
+            
             linhasAfetadas = stmt.executeUpdate();
 
             return linhasAfetadas;
@@ -199,7 +205,8 @@ public class EnderecoRdn {
             str.append("        ,BAIRRO          ");
             str.append("        ,CEP             ");
             str.append("        ,IDPESSOA        ");
-            str.append("        ,CIDADE        ");
+            str.append("        ,CIDADE         ");
+            str.append("        ,IDPESSOA        ");
             str.append("FROM ENDERECO            ");
             str.append("WHERE IDPESSOA = ?       ");
 
@@ -220,7 +227,8 @@ public class EnderecoRdn {
                         rs.getString("NUMERO"),
                         rs.getString("UF"),
                         rs.getString("BAIRRO"),
-                        rs.getString("CEP"));
+                        rs.getString("CEP"),
+                         rs.getInt("IDPESSOA"));
                     ret = end;
                     
 

@@ -39,7 +39,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         initComponents();
 
         this.modoNovo();
-        
+
         this.carregarTabela();
     }
 
@@ -176,7 +176,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
 
         jLabel12.setText("UF");
 
-        txtDataNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        txtDataNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
 
         try {
             txtCep.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###-###")));
@@ -329,6 +329,7 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         txtNumero.setEnabled(false);
         txtUf.setEnabled(false);
 
+        btnSalvar.setText("Salvar");
         //DESABILITAR OS BOTÕES
         btnSalvar.setEnabled(false);
         btnExcluir.setEnabled(false);
@@ -367,9 +368,6 @@ public class FrmCliente extends javax.swing.JInternalFrame {
             Logger.getLogger(FrmCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        Endereco endereco = new Endereco(0, txtRua.getText(), txtCidade.getText(), txtNumero.getText(), txtUf.getText(),
-                txtBairro.getText(), txtCep.getText());
-
         int idCli = 0;
 
         if (this.modoAlterarDeletar == true) {
@@ -379,31 +377,31 @@ public class FrmCliente extends javax.swing.JInternalFrame {
             idCli = 0;
         }
 
-        Cliente cliente = new Cliente(idCli, txtNome.getText(), cal, txtDocumento.getText(), txtTelefone.getText(),
-                txtEmail.getText(), null, txtFidelidade.getText());
+        Endereco endereco = new Endereco(0, txtRua.getText(), txtCidade.getText(), txtNumero.getText(), txtUf.getText(),
+                txtBairro.getText(), txtCep.getText(), idCli);
 
-        this.modoNovo();
+        Cliente cliente = new Cliente(idCli, txtNome.getText(), cal, txtDocumento.getText(), txtTelefone.getText(),
+                txtEmail.getText(), endereco, txtFidelidade.getText());
 
         ClienteRdn cliRdn = new ClienteRdn();
-        
-        
+
         if (this.modoAlterarDeletar == true) {
+
             //ALTERO O VALOR NA POSIÇÃO DA LISTA
             //lstCliente.set(this.indiceLista, cliente);
-            
-            cliRdn.alterarCliente(cliente);                       
+            cliRdn.alterarCliente(cliente);
             btnNovo.setEnabled(true);
 
         } else {
             //lstCliente.add(cliente);            
-            cliRdn.inserirCliente(cliente);           
-            
-        }                     
-        
-        
-        this.modoAlterarDeletar = false;        
+            cliRdn.inserirCliente(cliente);
+
+        }
+
+        this.modoAlterarDeletar = false;
         this.carregarTabela();
 
+        this.modoNovo();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void tableClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClienteMouseClicked
@@ -419,11 +417,9 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         //GUARDA O ID PARA ALTERAR/REMOVER
         this.id = idCliente;
 
-        int indice = 0;
-
+        //int indice = 0;
         ClienteRdn rdn = new ClienteRdn();
-        
-        
+
         //RECUPERAR POR ID
         Cliente cliente = rdn.obterPorId(id);
 
@@ -435,17 +431,14 @@ public class FrmCliente extends javax.swing.JInternalFrame {
                 indice = i;
                 break;
             }
-        }*/
-
-        
-        this.indiceLista = indice;
-
+        }
+        this.indiceLista = indice;*/
         txtNome.setText(cliente.getNome());
         txtEmail.setText(cliente.getEmail());
         txtFidelidade.setText(cliente.getCartaoFidelidade());
         txtTelefone.setText(cliente.getTelefone());
-          txtDocumento.setText(cliente.getDocumento());
-        
+        txtDocumento.setText(cliente.getDocumento());
+
         //ALTERAR A DATA
         DateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");
         txtDataNascimento.setText(formataData.format(cliente.getDataNascimento().getTime()));
@@ -488,13 +481,13 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         if (input == 0) {
 
             EnderecoRdn endRdn = new EnderecoRdn();
-            
+
             endRdn.deletarEnderecoPorPessoa(this.id);
-            
+
             ClienteRdn rdn = new ClienteRdn();
-            
-            rdn.deletarCliente(this.id);                        
-           
+
+            rdn.deletarCliente(this.id);
+
             this.carregarTabela();
 
         }
@@ -511,11 +504,9 @@ public class FrmCliente extends javax.swing.JInternalFrame {
         model.setRowCount(0);
 
         ClienteRdn cliRdn = new ClienteRdn();
-        
+
         List<Cliente> lstCli = cliRdn.obterTodos();
-        
-        
-        
+
         //para cada cliente da lista
         for (Cliente cli : lstCli) {
 

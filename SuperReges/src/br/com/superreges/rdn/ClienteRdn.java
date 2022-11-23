@@ -29,39 +29,54 @@ public class ClienteRdn {
 
             str.append("INSERT INTO pessoa(                 ");
             str.append("            nome                    ");
-          //  str.append("           ,dataNascimento          ");
+            str.append("            ,dataNascimento         ");
             str.append("            ,documento              ");
+            str.append("            ,cartaofidelidade       ");
             str.append("            ,telefone               ");
             str.append("            ,email                  ");
             str.append("            ,tipo)                  ");
             str.append("      VALUES(                       ");
             str.append("             ?                      ");
-          //  str.append("            ,?                      ");
             str.append("            ,?                      ");
             str.append("            ,?                      ");
             str.append("            ,?                      ");
             str.append("            ,?                      ");
-            str.append("         )                          ");
-            
-            //recuperar o ultimo do id do cliente
-
-            //inserir o endereco
-            
-            
-            //  Connection conn = new ConnectionFactory().getConnection();
+            str.append("            ,?                      ");
+            str.append("            ,?                      ");
+            str.append("         )                          ");                                              
+           
             ConnectionFactory factory = new ConnectionFactory();
             Connection conn = factory.getConnection();
 
-            PreparedStatement stmt = conn.prepareStatement(str.toString());
+            
+            //CRIA O STATMENT JÁ PREPARADO PARA OBTER O ID CLIENTE GERADO
+            PreparedStatement stmt = conn.prepareStatement(str.toString(), Statement.RETURN_GENERATED_KEYS);
 
             stmt.setString(1, cli.getNome());
-           // stmt.setDate(2, new java.sql.Date(cli.getDataNascimento().getTimeInMillis()));
-            stmt.setString(2, cli.getDocumento());
-            stmt.setString(3, cli.getTelefone());
-            stmt.setString(4, cli.getEmail());
-            stmt.setInt(5, 1);
-
-            linhasAfetadas = stmt.executeUpdate();
+            stmt.setDate(2, new java.sql.Date(cli.getDataNascimento().getTimeInMillis()));
+            stmt.setString(3, cli.getDocumento());
+            stmt.setString(4, cli.getCartaoFidelidade());
+            stmt.setString(5, cli.getTelefone());
+            stmt.setString(6, cli.getEmail());
+            stmt.setInt(7, 1);
+                  
+            int id = 0;
+            
+            linhasAfetadas =stmt.executeUpdate();      
+            
+            ResultSet rs = stmt.getGeneratedKeys();            
+            if (rs.next()) {
+                //RECUPERA O IDCLIENTE
+                
+               id = rs.getInt(1); //recuperar o id               
+               
+               EnderecoRdn endRdn = new EnderecoRdn();           
+               Endereco end = cli.getEndereco();
+               end.setIdPessoa(id);
+               
+               endRdn.inserirEndereco(end);
+               
+            }                                                
 
             //LIBERAR OS RECURSOS
             stmt.close();
@@ -105,9 +120,8 @@ public class ClienteRdn {
             linhasAfetadas = stmt.executeUpdate();
 
             
-            EnderecoRdn endRdn = new EnderecoRdn();
-            
-            //endRdn.alterarEndereco(cli.getEndereco());
+            EnderecoRdn endRdn = new EnderecoRdn();            
+            endRdn.alterarEndereco(cli.getEndereco());
             
             //LIBERAR OS RECURSOS
             stmt.close();
@@ -245,7 +259,7 @@ public class ClienteRdn {
             //INSTANCIA DA CLASSE ENDERECO RDN
             EnderecoRdn endRdn = new EnderecoRdn();
             
-            while (rs.next()) {
+            if (rs.next()) {
 
                 //CONVERTER SQL DATE TO CALENDAR
                 Calendar calendar = Calendar.getInstance();
